@@ -1,0 +1,31 @@
+# Virtual Environment
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Streamlit cache
+.streamlit/
+.cache/
+
+# Whisper / audio / generated data
+data/raw_lectures/
+data/transcripts/
+
+# ChromaDB local storage
+chromadb/
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+
+# Logs
+*.log
