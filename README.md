@@ -111,8 +111,6 @@ Lecture_RAG_Assistant/
 │   ├── test_generation.py
 │   ├── test_transcription.py
 │   └── test_vector_store.py
-│
-└── venv/
 </pre>
 
 ---
