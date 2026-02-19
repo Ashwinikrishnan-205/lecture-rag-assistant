@@ -1,5 +1,10 @@
 import streamlit as st
 import os
+from dotenv import load_dotenv
+from src.logger import logger
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from src.transcription import transcribe
 from src.chunking import chunk_text
@@ -71,17 +76,37 @@ if uploaded_file and not st.session_state.vector_ready:
         f.write(uploaded_file.read())
 
     with st.spinner("Processing lecture (one-time)..."):
-       transcript_path = "data/transcripts/lecture.txt"
-       
-       if os.path.exists(transcript_path):
-           with open(transcript_path, "r", encoding="utf-8") as f:
-              transcript = f.read()
-       else:
-           transcript = transcribe(audio_path, transcript_path)
+        try:
+           transcript_path = "data/transcripts/lecture.txt"
 
-       chunks = chunk_text(transcript)
-       embeddings = embed_texts(chunks)
-       add_to_vector_store(chunks, embeddings)
+           if os.path.exists(transcript_path):
+               with open(transcript_path, "r", encoding="utf-8") as f:
+                  transcript = f.read()
+           else:
+               transcript = transcribe(audio_path, transcript_path)
+
+           chunks = chunk_text(transcript)
+           embeddings = embed_texts(chunks)
+           add_to_vector_store(chunks, embeddings)
+
+        except Exception as e:
+            logger.error(f"Lecture processing failed: {e}")
+            st.error("Failed to process lecture. Please try another file.")
+            st.stop()
+
+
+    # with st.spinner("Processing lecture (one-time)..."):
+    #    transcript_path = "data/transcripts/lecture.txt"
+       
+    #    if os.path.exists(transcript_path):
+    #        with open(transcript_path, "r", encoding="utf-8") as f:
+    #           transcript = f.read()
+    #    else:
+    #        transcript = transcribe(audio_path, transcript_path)
+
+    #    chunks = chunk_text(transcript)
+    #    embeddings = embed_texts(chunks)
+    #    add_to_vector_store(chunks, embeddings)
 
 
     # Store safe values in session_state
@@ -111,16 +136,35 @@ else:
 
         if submitted and question.strip():
             with st.spinner("Thinking..."):
-               query_embedding = embed_texts([question])[0]
-               retrieved_chunks = query_vector_store(query_embedding)
-               answer = generate_answer(retrieved_chunks, question)
+                try:
+                   query_embedding = embed_texts([question])[0]
+                   retrieved_chunks = query_vector_store(query_embedding)
+                   answer = generate_answer(retrieved_chunks, question)
+
+                   st.session_state.qa_history.append({
+                       "question": question,
+                       "answer": answer,
+                       "context": retrieved_chunks
+                   })
+
+                except Exception as e:
+                    logger.error(f"QA failed: {e}")
+                    st.error("Something went wrong while answering. Please try again.")
+                    st.stop()
 
 
-            st.session_state.qa_history.append({
-                "question": question,
-                "answer": answer,
-                "context": retrieved_chunks
-            })
+        # if submitted and question.strip():
+        #     with st.spinner("Thinking..."):
+        #        query_embedding = embed_texts([question])[0]
+        #        retrieved_chunks = query_vector_store(query_embedding)
+        #        answer = generate_answer(retrieved_chunks, question)
+
+
+        #     st.session_state.qa_history.append({
+        #         "question": question,
+        #         "answer": answer,
+        #         "context": retrieved_chunks
+        #     })
 
 # ---------------- Display Q&A History ----------------
 for item in reversed(st.session_state.qa_history):

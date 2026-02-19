@@ -6,3 +6,7 @@ chromadb
 groq
 pydub
 tqdm
+python-dotenv
+pyyaml
+langchain
+langchain-community

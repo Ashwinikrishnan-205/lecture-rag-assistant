@@ -47,6 +47,10 @@ The system processes lecture audio, converts it into text, semantically indexes 
 
 ---
 
+Configuration parameters such as chunk size and retrieval settings can be adjusted via a configuration file, while secrets are managed using environment variables.
+
+---
+
 ## 4. System Architecture
 
 The system follows a standard **Retrieval-Augmented Generation (RAG)** pipeline:
@@ -59,7 +63,19 @@ The system follows a standard **Retrieval-Augmented Generation (RAG)** pipeline:
 
 ---
 
-## 5. Project Structure
+## 5.Evaluation
+
+The system was manually evaluated using 20 lecture-grounded questions derived from the lecture transcript.
+
+- Top-3 retrieval contained relevant context for most answerable questions.
+- Manual review confirmed grounded responses when information was present.
+- The system correctly refused to answer questions not supported by the lecture content, demonstrating hallucination control.
+
+This evaluation focuses on qualitative grounding and retrieval coverage rather than benchmark accuracy.
+
+---
+
+## 6. Project Structure
 
 <pre>
 Lecture_RAG_Assistant/
@@ -67,6 +83,11 @@ Lecture_RAG_Assistant/
 ├── app.py
 ├── requirements.txt
 ├── README.md
+├── .env
+├── .gitignore
+├── config.yaml
+├── app.log
+├── Model_Architecture.png
 │
 ├── data/
 │   ├── raw_lectures/
@@ -80,7 +101,9 @@ Lecture_RAG_Assistant/
 │   ├── generation.py
 │   ├── retrieval.py
 │   ├── transcription.py
-│   └── vector_store.py
+│   ├── vector_store.py
+│   ├── logger.py
+│   └── langchain_pipeline.py
 │
 ├── tests/
 │   ├── test_chunking.py
@@ -89,12 +112,12 @@ Lecture_RAG_Assistant/
 │   ├── test_transcription.py
 │   └── test_vector_store.py
 │
-└── Model_Architecture.png
+└── venv/
 </pre>
 
 ---
 
-## 6. Installation and Setup
+## 7. Installation and Setup
 
 ### Step 1: Clone the Repository
 ```bash
@@ -113,9 +136,12 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Step 4: Set Environment Variable
-```bash
-set GROQ_API_KEY=your_api_key_here
+### Step 4: Configure Environment Variables
+
+Create a `.env` file in the project root with the following content:
+
+```env
+GROQ_API_KEY=your_api_key_here
 ```
 
 ### Step 5: Run the Application
@@ -128,7 +154,7 @@ http://localhost:8501
 
 ---
 
-## 7. Output Behavior
+## 8. Output Behavior
 
 - **Grounded Answers**  
   Responses are generated strictly from lecture content.
@@ -142,7 +168,7 @@ http://localhost:8501
 
 ---
 
-## 8. Use Cases
+## 9. Use Cases
 
 - Concept clarification from recorded lectures  
 - Academic study assistance  
@@ -152,7 +178,7 @@ http://localhost:8501
 
 ---
 
-## 9. Limitations
+## 10. Limitations
 
 - Performance depends on transcription accuracy  
 - Very long lectures increase processing time  
@@ -161,7 +187,14 @@ http://localhost:8501
 
 ---
 
-## 10. Developer Information
+## 11.Performance Notes
+
+- Initial lecture indexing time depends on audio length and runs on CPU.
+- Query latency varies based on model inference time and network conditions.
+- Suitable for offline lecture processing and interactive querying for small to medium lecture lengths.
+
+
+## 12. Developer Information
 
 <p align="justify">
 <b>Author:</b> Ashwini Krishnan<br>
@@ -172,7 +205,7 @@ http://localhost:8501
 
 ---
 
-## 11. License
+## 13. License
 
 <p align="justify">
 This project is developed for educational and professional demonstration purposes.  
