@@ -2,7 +2,7 @@
 
 <p align="center">
 <b>A Retrieval-Augmented Generation (RAG) System for Lecture-Based Question Answering</b><br>
-Deep Learning–driven AI assistant that answers questions strictly from lecture audio content, preventing hallucinations.
+An AI assistant that answers questions strictly from lecture audio using a retrieval-augmented pipeline with large language models, reducing hallucinations.
 </p>
 
 ---
@@ -29,7 +29,7 @@ The system processes lecture audio, converts it into text, semantically indexes 
 - Explicit hallucination control with refusal responses
 - One-time lecture processing with cached models
 - Interactive Streamlit-based user interface
-- Modular, production-oriented architecture
+- Modular, production-style architecture
 
 ---
 
@@ -67,7 +67,7 @@ The system follows a standard **Retrieval-Augmented Generation (RAG)** pipeline:
 
 The system was manually evaluated using 20 lecture-grounded questions derived from the lecture transcript.
 
-- Top-3 retrieval contained relevant context for most answerable questions.
+- Top-3 retrieval frequently surfaced relevant context for answerable questions during manual evaluation.
 - Manual review confirmed grounded responses when information was present.
 - The system correctly refused to answer questions not supported by the lecture content, demonstrating hallucination control.
 
@@ -96,6 +96,7 @@ Lecture_RAG_Assistant/
 ├── notebooks/
 │
 ├── src/
+    ├── __init__.py
 │   ├── chunking.py
 │   ├── embeddings.py
 │   ├── generation.py
