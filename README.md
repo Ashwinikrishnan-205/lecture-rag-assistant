@@ -30,6 +30,7 @@ The system processes lecture audio, converts it into text, semantically indexes 
 - One-time lecture processing with cached models
 - Interactive Streamlit-based user interface
 - Modular, production-style architecture
+- Optional LangChain-based pipeline for orchestration and comparison with the custom RAG implementation
 
 ---
 
@@ -41,8 +42,11 @@ The system processes lecture audio, converts it into text, semantically indexes 
 | Embeddings | Sentence Transformers (all-MiniLM-L6-v2) |
 | Vector Database | ChromaDB |
 | LLM | Llama 3.1 (8B Instant via Groq API) |
+| Orchestration (Optional) | LangChain |
 | Deep Learning | PyTorch |
 | Web Interface | Streamlit |
+| Config & Secrets | YAML config, dotenv environment variables |
+| Logging | Python logging |
 | Programming Language | Python 3.x |
 
 ---
