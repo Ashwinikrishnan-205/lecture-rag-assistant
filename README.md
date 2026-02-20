@@ -96,7 +96,7 @@ Lecture_RAG_Assistant/
 ├── notebooks/
 │
 ├── src/
-    ├── __init__.py
+│   ├── __init__.py
 │   ├── chunking.py
 │   ├── embeddings.py
 │   ├── generation.py
